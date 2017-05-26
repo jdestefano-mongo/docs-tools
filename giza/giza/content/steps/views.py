@@ -59,7 +59,7 @@ def render_steps(steps, conf):
                     indent=3)
         r.newline()
 
-        r.directive('only', 'not(html or dirhtml or singlehtml)')
+        r.directive('only', 'latex or epub')
         r.newline()
 
         if 'heading' in step:
@@ -75,8 +75,19 @@ def render_steps(steps, conf):
 
         render_step_content(step, 3, r)
 
-    return r
+        r.directive('only', 'markdown')
+        r.newline()
 
+        if 'heading' in step:
+            r.li(step.heading, bullet='{}.'.format(step.number), indent=3)
+            r.newline()
+        else:
+            r.li(step.heading, bullet='{}.'.format(step.number))
+            r.newline()
+        
+        render_step_content(step, 6, r)
+
+    return r
 
 def render_step_content(step, indent, r):
     if 'pre' in step:
